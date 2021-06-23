@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css } from '@emotion/react';
+import Router from 'next/router';
 import Layout from '../components/layout/Layout';
-import { Form, Field, InputSubmit, Error } from '../components/ui/Form';
+import {
+  Form,
+  Field,
+  InputSubmit,
+  Error,
+  ErrorSubmit,
+} from '../components/ui/Form';
+
+import firebase from '../firebase';
 
 import useValidation from '../hooks/useValidation';
 import validateSignUp from '../validation/validateSignUp';
@@ -12,13 +21,22 @@ export default function SignUp() {
     email: '',
     password: '',
   };
+
+  const [error, setError] = useState(false);
+
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateSignUp, signUp);
 
   const { name, email, password } = values;
 
-  function signUp() {
-    console.log('Registrando...');
+  async function signUp() {
+    try {
+      await firebase.userRegistration(name, email, password);
+      Router.push('/');
+    } catch (error) {
+      console.error('Oops, Something went wrong', error.message);
+      setError(error.message);
+    }
   }
 
   return (
@@ -75,6 +93,7 @@ export default function SignUp() {
             </Field>
 
             <InputSubmit type="submit" value="Registrarse" />
+            {error && <ErrorSubmit>{error}</ErrorSubmit>}
           </Form>
         </>
       </Layout>

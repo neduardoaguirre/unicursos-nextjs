@@ -47,3 +47,15 @@ export const Error = styled.p`
   text-transform: uppercase;
   margin: 0.5rem 0;
 `;
+
+export const ErrorSubmit = styled.p`
+  background-color: red;
+  padding: 1rem;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 2rem 0;
+`;
