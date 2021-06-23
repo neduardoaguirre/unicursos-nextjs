@@ -2,8 +2,15 @@ import styled from '@emotion/styled';
 
 export const Form = styled.form`
   max-width: 600px;
-  width: 95%;
-  margin: 5rem auto 0 auto;
+  width: 90%;
+  margin: 5rem auto;
+
+  fieldset {
+    margin: 2rem 0;
+    border: 1px solid #e1e1e1;
+    font-size: 2rem;
+    padding: 2rem;
+  }
 `;
 
 export const Field = styled.div`
@@ -11,13 +18,18 @@ export const Field = styled.div`
   display: flex;
   align-items: center;
   label {
-    flex: 0 0 150px;
+    flex: 0 0 100px;
     font-size: 1.8rem;
   }
 
   input {
     flex: 1;
     padding: 1rem;
+  }
+
+  textarea {
+    flex: 1;
+    height: 300px;
   }
 `;
 
