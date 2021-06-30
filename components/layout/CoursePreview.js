@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
+import Link from 'next/link';
 
 const Course = styled.li`
   padding: 4rem;
@@ -72,22 +73,20 @@ const Votes = styled.div`
     font-weight: 700;
   }
 `;
-const Image = styled.img`
-  width: 200px;
-`;
 
 const CoursePreview = ({ course }) => {
-  const { id, comments, created, description, name, url, imageUrl, votes } =
-    course;
+  const { id, comments, created, description, name, imageUrl, votes } = course;
 
   return (
     <Course>
       <Description>
         <div>
-          <Image src={imageUrl} />
+          <img src={imageUrl} />
         </div>
         <div>
-          <Title>{name}</Title>
+          <Link href="/courses/[id]" as={`/courses/${id}`}>
+            <Title>{name}</Title>
+          </Link>
           <Text>{description}</Text>
           <Comments>
             <div>
@@ -96,7 +95,7 @@ const CoursePreview = ({ course }) => {
             </div>
           </Comments>
           <p>
-            Publicado hace:{' '}
+            Publicado hace{' '}
             {formatDistanceToNow(new Date(created), { locale: es })}
           </p>
         </div>

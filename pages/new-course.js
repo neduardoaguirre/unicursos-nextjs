@@ -9,37 +9,30 @@ import {
   Error,
   ErrorSubmit,
 } from '../components/ui/Form';
-
 import FileUploader from 'react-firebase-file-uploader';
-
 import { FirebaseContext } from '../firebase';
-
 import useValidation from '../hooks/useValidation';
 import validateNewProduct from '../validation/validateNewCourse';
+import Error404 from '../components/layout/Error404';
 
 const INITIAL_STATE = {
   name: '',
   brand: '',
-  //image: '',
+  image: '',
   url: '',
   description: '',
 };
 
 export default function NewProduct() {
   const [error, setError] = useState(false);
-
   const [imageName, setImageName] = useState('');
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
-
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateNewProduct, newProduct);
-
   const { name, image, url, description } = values;
-
   const router = useRouter();
-
   const { user, firebase } = useContext(FirebaseContext);
 
   async function newProduct() {
@@ -55,6 +48,10 @@ export default function NewProduct() {
       votes: 0,
       comments: [],
       created: Date.now(),
+      owner: {
+        id: user.uid,
+        name: user.displayName,
+      },
     };
 
     firebase.db.collection('courses').add(course);
@@ -92,81 +89,85 @@ export default function NewProduct() {
   return (
     <div>
       <Layout>
-        <>
-          <h1
-            css={css`
-              text-align: center;
-              margin-top: 5rem;
-            `}
-          >
-            Agregar Curso
-          </h1>
-          <Form onSubmit={handleSubmit} noValidate>
-            <fieldset>
-              {errors.name && <Error>{errors.name}</Error>}
-              <Field>
-                <label htmlFor="name">Nombre</label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Nombre del curso"
-                  name="name"
-                  value={name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Field>
+        {!user ? (
+          <Error404 message="Por favor Inicie Sesión" />
+        ) : (
+          <>
+            <h1
+              css={css`
+                text-align: center;
+                margin-top: 5rem;
+              `}
+            >
+              Agregar Curso
+            </h1>
+            <Form onSubmit={handleSubmit} noValidate>
+              <fieldset>
+                {errors.name && <Error>{errors.name}</Error>}
+                <Field>
+                  <label htmlFor="name">Nombre</label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Nombre del curso"
+                    name="name"
+                    value={name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Field>
 
-              <Field>
-                <label htmlFor="image">Imagen</label>
-                <FileUploader
-                  accept="image/*"
-                  id="image"
-                  name="image"
-                  randomizeFileName
-                  storageRef={firebase.storage.ref('products')}
-                  onUploadStart={handleUploadStart}
-                  onUploadError={handleUploadError}
-                  onUploadSuccess={handleUploadSuccess}
-                  onProgress={handleProgress}
-                />
-              </Field>
+                <Field>
+                  <label htmlFor="image">Imagen</label>
+                  <FileUploader
+                    accept="image/*"
+                    id="image"
+                    name="image"
+                    randomizeFileName
+                    storageRef={firebase.storage.ref('products')}
+                    onUploadStart={handleUploadStart}
+                    onUploadError={handleUploadError}
+                    onUploadSuccess={handleUploadSuccess}
+                    onProgress={handleProgress}
+                  />
+                </Field>
 
-              {errors.url && <Error>{errors.url}</Error>}
-              <Field>
-                <label htmlFor="url">URL</label>
-                <input
-                  type="url"
-                  id="url"
-                  placeholder="Product URL"
-                  name="url"
-                  value={url}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Field>
-            </fieldset>
+                {errors.url && <Error>{errors.url}</Error>}
+                <Field>
+                  <label htmlFor="url">URL</label>
+                  <input
+                    type="url"
+                    id="url"
+                    placeholder="Product URL"
+                    name="url"
+                    value={url}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Field>
+              </fieldset>
 
-            <fieldset>
-              <legend>Sobre tu curso</legend>
+              <fieldset>
+                <legend>Sobre tu curso</legend>
 
-              {errors.description && <Error>{errors.description}</Error>}
-              <Field>
-                <label htmlFor="description">Descripción</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Field>
-            </fieldset>
+                {errors.description && <Error>{errors.description}</Error>}
+                <Field>
+                  <label htmlFor="description">Descripción</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Field>
+              </fieldset>
 
-            <InputSubmit type="submit" value="Agregar Curso" />
-            {error && <ErrorSubmit>{error}</ErrorSubmit>}
-          </Form>
-        </>
+              <InputSubmit type="submit" value="Agregar Curso" />
+              {error && <ErrorSubmit>{error}</ErrorSubmit>}
+            </Form>
+          </>
+        )}
       </Layout>
     </div>
   );
