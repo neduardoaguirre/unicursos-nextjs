@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FirebaseContext } from '../../firebase';
-import Error404 from '../../components/layout/Error404';
+import NotAvailable from '../../components/layout/NotAvailable';
 import Layout from '../../components/layout/Layout';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -9,6 +9,7 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
 import { InputSubmit, Field } from '../../components/ui/Form';
 import Button from '../../components/ui/Button';
+import Spinner from '../../components/ui/Spinner';
 
 const CourseContainer = styled.div`
   @media (min-width: 768px) {
@@ -52,9 +53,9 @@ const Course = () => {
     <Layout>
       <>
         {loading === 0 && !error ? (
-          'Cargando...'
+          <Spinner />
         ) : error ? (
-          <Error404 message="Curso inexistente" />
+          <NotAvailable message="Curso inexistente" />
         ) : (
           <div className="container">
             <h1

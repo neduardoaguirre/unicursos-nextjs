@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/react';
 
-const Error404 = ({ message }) => {
+const NotAvailable = ({ message }) => {
   return (
     <h1
       css={css`
@@ -14,4 +14,4 @@ const Error404 = ({ message }) => {
   );
 };
 
-export default Error404;
+export default NotAvailable;

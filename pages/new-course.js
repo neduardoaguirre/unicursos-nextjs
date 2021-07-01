@@ -13,7 +13,7 @@ import FileUploader from 'react-firebase-file-uploader';
 import { FirebaseContext } from '../firebase';
 import useValidation from '../hooks/useValidation';
 import validateNewProduct from '../validation/validateNewCourse';
-import Error404 from '../components/layout/Error404';
+import NotAvailable from '../components/layout/NotAvailable';
 
 const INITIAL_STATE = {
   name: '',
@@ -90,7 +90,7 @@ export default function NewProduct() {
     <div>
       <Layout>
         {!user ? (
-          <Error404 message="Por favor Inicie Sesión" />
+          <NotAvailable message="Por favor Inicie Sesión" />
         ) : (
           <>
             <h1
