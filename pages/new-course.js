@@ -12,7 +12,7 @@ import {
 import FileUploader from 'react-firebase-file-uploader';
 import { FirebaseContext } from '../firebase';
 import useValidation from '../hooks/useValidation';
-import validateNewProduct from '../validation/validateNewCourse';
+import validateNewCourse from '../validation/validateNewCourse';
 import NotAvailable from '../components/layout/NotAvailable';
 
 const INITIAL_STATE = {
@@ -30,7 +30,7 @@ export default function NewProduct() {
   const [progress, setProgress] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
   const { values, errors, handleChange, handleSubmit, handleBlur } =
-    useValidation(INITIAL_STATE, validateNewProduct, newProduct);
+    useValidation(INITIAL_STATE, validateNewCourse, newProduct);
   const { name, image, url, description } = values;
   const router = useRouter();
   const { user, firebase } = useContext(FirebaseContext);
@@ -52,6 +52,7 @@ export default function NewProduct() {
         id: user.uid,
         name: user.displayName,
       },
+      voters: [],
     };
 
     firebase.db.collection('courses').add(course);
@@ -77,11 +78,10 @@ export default function NewProduct() {
     setUploading(false);
     setImageName(name);
     firebase.storage
-      .ref('products')
+      .ref('courses')
       .child(name)
       .getDownloadURL()
       .then((url) => {
-        console.log(url);
         setImageUrl(url);
       });
   };
@@ -123,8 +123,8 @@ export default function NewProduct() {
                     accept="image/*"
                     id="image"
                     name="image"
-                    randomizeFileName
-                    storageRef={firebase.storage.ref('products')}
+                    randomizeFilename
+                    storageRef={firebase.storage.ref('courses')}
                     onUploadStart={handleUploadStart}
                     onUploadError={handleUploadError}
                     onUploadSuccess={handleUploadSuccess}
@@ -138,7 +138,7 @@ export default function NewProduct() {
                   <input
                     type="url"
                     id="url"
-                    placeholder="Product URL"
+                    placeholder="URL del Curso"
                     name="url"
                     value={url}
                     onChange={handleChange}

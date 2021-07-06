@@ -12,14 +12,20 @@ export default function Home() {
   const { firebase } = useContext(FirebaseContext);
 
   useEffect(() => {
-    const getCourses = () => {
+    const courses = firebase.db
+      .collection('courses')
+      .orderBy('created', 'desc')
+      .onSnapshot(handleSnapshot);
+    const unsubscribe = courses;
+    const getCourses = async () => {
       setLoading(true);
-      firebase.db
-        .collection('courses')
-        .orderBy('created', 'desc')
-        .onSnapshot(handleSnapshot);
+      await courses;
     };
     getCourses();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   function handleSnapshot(snapshot) {

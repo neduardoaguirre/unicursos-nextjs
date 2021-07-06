@@ -40,7 +40,6 @@ export const InputSubmit = styled.input`
   text-align: center;
   color: #ffffff;
   font-size: 1.8rem;
-  text-transform: uppercase;
   border: none;
   border-radius: 0.5rem;
   font-family: 'PT Sans', sans-serif;

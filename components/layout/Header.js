@@ -17,7 +17,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Logo = styled.p`
+const Logo = styled.a`
   color: var(--green);
   font-size: 4rem;
   line-height: 0;
@@ -56,7 +56,6 @@ const Header = () => {
         </div>
         <div
           css={css`
-            margin-right: 2rem;
             display: flex;
             align-items: center;
           `}
@@ -77,7 +76,14 @@ const Header = () => {
           ) : (
             <>
               <Link href="/login">
-                <Button bgColor="true">Ingresar</Button>
+                <Button
+                  bgColor="true"
+                  css={css`
+                    margin-right: 1rem;
+                  `}
+                >
+                  Ingresar
+                </Button>
               </Link>
               <Link href="/sign-up">
                 <Button>Registrarse</Button>

@@ -62,7 +62,6 @@ const Layout = (props) => {
         `}
       />
       <Head>
-        <html lang="es" />
         <title>UniCursos</title>
         <link
           rel="stylesheet"
