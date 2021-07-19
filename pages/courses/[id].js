@@ -10,6 +10,8 @@ import { es } from 'date-fns/locale';
 import { InputSubmit, Field, Error } from '../../components/ui/Form';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
+import Swal from 'sweetalert2';
+import { FaTrash, FaLink, FaVoteYea } from 'react-icons/fa';
 
 const CourseContainer = styled.div`
   @media (min-width: 768px) {
@@ -126,6 +128,38 @@ const Course = () => {
     }
   };
 
+  const canDeleteCourse = () => {
+    if (!user) return false;
+    if (owner.id === user.uid) return true;
+  };
+
+  const deleteCourse = async () => {
+    try {
+      await firebase.db.collection('courses').doc(id).delete();
+      Swal.fire('¡Eliminado!', 'El curso ha sido eliminado.', 'success');
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const confirmDelete = () => {
+    Swal.fire({
+      title: '¿Desea eliminar este curso?',
+      text: '¡No se podrá revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCourse();
+      }
+    });
+  };
+
   return (
     <Layout>
       <>
@@ -145,11 +179,30 @@ const Course = () => {
             </h1>
             <CourseContainer>
               <div>
-                <p>
-                  Publicado hace{' '}
-                  {formatDistanceToNow(new Date(created), { locale: es })}
-                </p>
-                <p>Instructor: {owner.name}</p>
+                <div
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  `}
+                >
+                  <div>
+                    <p>
+                      Publicado hace{' '}
+                      {formatDistanceToNow(new Date(created), { locale: es })}
+                    </p>
+                    <p>Instructor: {owner.name}</p>
+                  </div>
+                  {canDeleteCourse() && (
+                    <Button onClick={confirmDelete}>
+                      <FaTrash
+                        css={css`
+                          color: red;
+                        `}
+                      />
+                    </Button>
+                  )}
+                </div>
                 <img src={imageUrl} />
                 <p>{description}</p>
                 {user && (
@@ -208,8 +261,9 @@ const Course = () => {
                   margin-top: 0.5rem;
                 `}
               >
-                <Button target="_blank" bgColor="true" href={url}>
-                  Ver Curso
+                <Button target="_blank" href={url}>
+                  Link {''}
+                  <FaLink />
                 </Button>
                 <div
                   css={css`
@@ -224,9 +278,12 @@ const Course = () => {
                     {votes} Votos
                   </p>
                   {duplicateVote && <Error>Ya has votado este curso</Error>}
-                  {user && user.uid === owner.id ? null : (
-                    <Button onClick={voteCourse}>Votar</Button>
-                  )}
+                  {user && user.uid !== owner.id ? (
+                    <Button onClick={voteCourse}>
+                      Votar {''}
+                      <FaVoteYea />
+                    </Button>
+                  ) : null}
                 </div>
               </aside>
             </CourseContainer>

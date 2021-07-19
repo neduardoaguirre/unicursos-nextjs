@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { css } from '@emotion/react';
-import Router, { useRouter } from 'next/router';
+import router from 'next/router';
 import Layout from '../components/layout/Layout';
 import {
   Form,
@@ -32,7 +32,6 @@ export default function NewProduct() {
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateNewCourse, newProduct);
   const { name, image, url, description } = values;
-  const router = useRouter();
   const { user, firebase } = useContext(FirebaseContext);
 
   async function newProduct() {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
+import { FaExclamationCircle } from 'react-icons/fa';
 
 const NotAvailable = ({ message }) => {
   return (
@@ -9,6 +10,11 @@ const NotAvailable = ({ message }) => {
         text-align: center;
       `}
     >
+      <FaExclamationCircle
+        css={css`
+          color: var(--red);
+        `}
+      />{' '}
       {message}
     </h1>
   );

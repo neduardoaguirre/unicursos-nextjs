@@ -1,20 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Error } from './Form';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-
-const InputText = styled.input`
-  border: 1px solid var(--grey3);
-  padding: 1rem;
-  min-width: 300px;
-`;
+import { FaSearch } from 'react-icons/fa';
+import router from 'next/router';
 
 const Button = styled.button`
   height: 3rem;
   width: 3rem;
   display: block;
-  background-size: 4rem;
-  background-image: url('/static/img/search.png');
-  background-repeat: no-repeat;
   position: absolute;
   right: 1rem;
   top: 1.5px;
@@ -22,20 +16,81 @@ const Button = styled.button`
   border: none;
   text-indent: -9999px;
 
-  &hover {
+  &:hover {
     cursor: pointer;
   }
 `;
 
+const InputText = styled.input`
+  padding: 1rem;
+  min-width: 260px;
+`;
+
 const Search = () => {
+  const [search, setSearch] = useState('');
+  const [emptySearch, setEmptySearch] = useState(false);
+
+  const placeholderText = emptySearch
+    ? 'Agrega un texto a tu búsqueda'
+    : 'Buscar Cursos';
+  const color = emptySearch && 'var(--red)';
+  const border = emptySearch
+    ? '1px solid var(--red)'
+    : '1px solid var(--grey3)';
+
+  const iconStyle = {
+    position: 'absolute',
+    right: '1rem',
+    top: '11px',
+    color: color,
+  };
+
+  const searchCourse = (e) => {
+    e.preventDefault();
+    if (search.trim() === '') {
+      setEmptySearch(true);
+    } else {
+      console.log(search);
+      router.push({
+        pathname: '/search',
+        query: { q: search },
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+    setEmptySearch(false);
+  };
+
+  const handleOnKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      searchCourse(e);
+    }
+  };
+
   return (
     <form
       css={css`
         position: relative;
       `}
+      onSubmit={searchCourse}
+      onKeyDown={handleOnKeyDown}
     >
-      <InputText type="text" placeholder="Buscar Cursos" />
-      <Button type="submit">Buscar</Button>
+      <InputText
+        css={css`
+          border: ${border};
+          ::placeholder {
+            color: ${color};
+          }
+        `}
+        type="text"
+        placeholder={placeholderText}
+        onChange={handleChange}
+      />
+      <Button type="submit">
+        <FaSearch style={iconStyle} />
+      </Button>
     </form>
   );
 };

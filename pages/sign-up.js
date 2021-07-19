@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import Router from 'next/router';
+import router from 'next/router';
 import Layout from '../components/layout/Layout';
 import {
   Form,
@@ -32,7 +32,7 @@ export default function SignUp() {
   async function signUp() {
     try {
       await firebase.userRegistration(name, email, password);
-      Router.push('/');
+      router.push('/');
     } catch (error) {
       console.error('Oops, Something went wrong', error.message);
       setError(error.message);
