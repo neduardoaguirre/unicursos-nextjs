@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import router from 'next/router';
 import Layout from '../components/layout/Layout';
+import Swal from 'sweetalert2';
 import {
   Form,
   Field,
@@ -31,6 +32,13 @@ export default function Login() {
   async function login() {
     try {
       await firebase.login(email, password);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Has iniciado sesión correctamente',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       router.push('/');
     } catch (error) {
       console.error('Oops, Something went wrong', error.message);

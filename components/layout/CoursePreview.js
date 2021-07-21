@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
 import Link from 'next/link';
+import { FaComments } from 'react-icons/fa';
 
 const Course = styled.li`
   padding: 4rem;
@@ -10,6 +12,9 @@ const Course = styled.li`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e1e1e1;
+  @media (max-width: 450px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Title = styled.a`
@@ -26,6 +31,10 @@ const Description = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   column-gap: 2rem;
+  @media (max-width: 450px) {
+    grid-template-columns: 1fr;
+    /* flex: 1 0 300px; */
+  }
 `;
 
 const Text = styled.p`
@@ -45,10 +54,6 @@ const Comments = styled.div`
     padding: 0.3rem 1rem;
     margin-right: 2rem;
   }
-  img {
-    width: 2rem;
-    margin-right: 2rem;
-  }
   p {
     font-size: 1.6rem;
     margin-right: 1rem;
@@ -63,7 +68,8 @@ const Votes = styled.div`
   flex: 0 0 auto;
   text-align: center;
   border: 1px solid #e1e1e1;
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
+  margin-left: 1rem;
   div {
     font-size: 2rem;
   }
@@ -71,6 +77,10 @@ const Votes = styled.div`
     margin: 0;
     font-size: 2rem;
     font-weight: 700;
+  }
+  @media (max-width: 450px) {
+    flex: 1 1 auto;
+    margin-left: 0rem;
   }
 `;
 
@@ -90,8 +100,15 @@ const CoursePreview = ({ course }) => {
           <Text>{description}</Text>
           <Comments>
             <div>
-              <img src="/static/img/comment.png" />
-              <p>{comments.length} Comentarios</p>
+              <FaComments
+                css={css`
+                  margin-right: 1rem;
+                `}
+              />
+              <p>
+                {comments.length}{' '}
+                {comments.length === 1 ? 'Comentario' : 'Comentarios'}
+              </p>
             </div>
           </Comments>
           <p>

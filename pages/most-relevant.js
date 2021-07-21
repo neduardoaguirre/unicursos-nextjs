@@ -20,6 +20,7 @@ export default function MostRelevant() {
         ) : (
           <div className="listing">
             <div className="container">
+              <h2>Populares</h2>
               <ul className="bg-white">
                 {courses.map((course) => (
                   <CoursePreview key={course.id} course={course} />

@@ -148,6 +148,7 @@ const Course = () => {
       title: '¿Desea eliminar este curso?',
       text: '¡No se podrá revertir esta acción!',
       icon: 'warning',
+      heightAuto: 'false',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -275,7 +276,7 @@ const Course = () => {
                       text-align: center;
                     `}
                   >
-                    {votes} Votos
+                    {votes} {votes === 1 ? 'Voto' : 'Votos'}
                   </p>
                   {duplicateVote && <Error>Ya has votado este curso</Error>}
                   {user && user.uid !== owner.id ? (

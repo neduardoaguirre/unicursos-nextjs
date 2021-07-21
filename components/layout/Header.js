@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 import Search from '../ui/Search';
 import Navigation from '../layout/Navigation';
 import Button from '../ui/Button';
+import Swal from 'sweetalert2';
 import { FirebaseContext } from '../../firebase';
 
 const HeaderContainer = styled.div`
@@ -14,6 +15,7 @@ const HeaderContainer = styled.div`
   @media (min-width: 768px) {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 `;
 
@@ -33,6 +35,17 @@ const Logo = styled.a`
 const Header = () => {
   const { user, firebase } = useContext(FirebaseContext);
 
+  const logOut = () => {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Has cerrado sesión correctamente',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    firebase.logOut();
+  };
+
   return (
     <header
       css={css`
@@ -45,6 +58,8 @@ const Header = () => {
           css={css`
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
           `}
         >
           <Link href="/">
@@ -58,6 +73,7 @@ const Header = () => {
           css={css`
             display: flex;
             align-items: center;
+            justify-content: center;
           `}
         >
           {user ? (
@@ -69,7 +85,7 @@ const Header = () => {
               >
                 ¡Hola {user.displayName}!
               </p>
-              <Button bgColor="true" onClick={() => firebase.logOut()}>
+              <Button bgColor="true" onClick={() => logOut()}>
                 Salir
               </Button>
             </>

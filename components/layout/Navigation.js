@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 import { FirebaseContext } from '../../firebase';
 
 const Nav = styled.nav`
+  display: flex;
+  align-items: center;
   padding-left: 2rem;
   a {
     font-size: 1.8rem;
@@ -14,6 +16,10 @@ const Nav = styled.nav`
     &:last-of-type {
       margin-right: 0;
     }
+  }
+  @media (max-width: 610px) {
+    margin: 2rem;
+    padding-left: 0rem;
   }
 `;
 

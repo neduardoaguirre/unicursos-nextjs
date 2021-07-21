@@ -9,9 +9,8 @@ import {
   Error,
   ErrorSubmit,
 } from '../components/ui/Form';
-
+import Swal from 'sweetalert2';
 import firebase from '../firebase';
-
 import useValidation from '../hooks/useValidation';
 import validateSignUp from '../validation/validateSignUp';
 
@@ -32,6 +31,13 @@ export default function SignUp() {
   async function signUp() {
     try {
       await firebase.userRegistration(name, email, password);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Se ha registrado correctamente',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       router.push('/');
     } catch (error) {
       console.error('Oops, Something went wrong', error.message);

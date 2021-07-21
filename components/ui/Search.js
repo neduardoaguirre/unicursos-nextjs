@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Error } from './Form';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { FaSearch } from 'react-icons/fa';
@@ -24,6 +23,9 @@ const Button = styled.button`
 const InputText = styled.input`
   padding: 1rem;
   min-width: 260px;
+  @media (max-width: 768px) {
+    min-width: 180px;
+  }
 `;
 
 const Search = () => {

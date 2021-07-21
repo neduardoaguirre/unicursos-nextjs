@@ -20,6 +20,7 @@ export default function Home() {
         ) : (
           <div className="listing">
             <div className="container">
+              <h2>Listado de Cursos</h2>
               <ul className="bg-white">
                 {courses.map((course) => (
                   <CoursePreview key={course.id} course={course} />
