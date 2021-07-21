@@ -52,7 +52,6 @@ const Search = () => {
     if (search.trim() === '') {
       setEmptySearch(true);
     } else {
-      console.log(search);
       router.push({
         pathname: '/search',
         query: { q: search },

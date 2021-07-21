@@ -7,7 +7,6 @@ import Spinner from '../components/ui/Spinner';
 import NotAvailable from '../components/layout/NotAvailable';
 
 export default function Search() {
-  const [notFound, setNotFound] = useState(false);
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -28,7 +27,6 @@ export default function Search() {
           );
         });
         setResult(filteredCourses);
-        result.length === 0 && setNotFound(true);
       }
     }
   }, [q, courses]);
@@ -38,7 +36,7 @@ export default function Search() {
       <Layout>
         {loading && !error ? (
           <Spinner />
-        ) : error || notFound ? (
+        ) : error || !result.length ? (
           <NotAvailable message="No hay cursos disponibles con su búsqueda" />
         ) : (
           <div className="listing">
